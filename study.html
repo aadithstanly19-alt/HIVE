@@ -469,6 +469,180 @@
         transform: rotate(360deg);
       }
     }
+
+    /* ── Flashcard Modal ── */
+    .fc-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .fc-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .fc-modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      width: min(640px, 92vw);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    .fc-overlay.open .fc-modal {
+      transform: translateY(0);
+    }
+    .fc-modal-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .fc-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    .fc-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.5rem;
+      line-height: 1;
+      transition: color 0.2s;
+      padding: 4px;
+    }
+    .fc-close:hover { color: #e74c3c; }
+    .fc-counter {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    /* 3D flip card */
+    .fc-scene {
+      width: 100%;
+      height: 220px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+    .fc-card {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fc-card.flipped {
+      transform: rotateY(180deg);
+    }
+    .fc-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .fc-front {
+      background: linear-gradient(135deg, rgba(245,166,35,0.12), rgba(245,166,35,0.04));
+      border: 1px solid rgba(245,166,35,0.25);
+    }
+    .fc-back {
+      background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(46,204,113,0.03));
+      border: 1px solid rgba(46,204,113,0.2);
+      transform: rotateY(180deg);
+    }
+    .fc-face-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+    .fc-front .fc-face-label { color: var(--primary); }
+    .fc-back .fc-face-label { color: var(--success); }
+    .fc-face-text {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--text);
+      font-weight: 500;
+    }
+    .fc-back .fc-face-text {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .fc-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+    .fc-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+      justify-content: center;
+    }
+    .fc-btn {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 0.65rem 1.4rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .fc-btn:hover {
+      background: var(--primary);
+      color: #000;
+      border-color: var(--primary);
+    }
+    .fc-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .fc-progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--glass);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .fc-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      border-radius: 4px;
+      transition: width 0.4s ease;
+    }
   </style>
 </head>
 
@@ -582,7 +756,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="resource-item">
+            <a href="#" class="resource-item" onclick="openFlashcards(event)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
@@ -624,6 +798,43 @@
       </div>
     </div>
   </main>
+
+  <!-- ── Flashcard Modal ── -->
+  <div class="fc-overlay" id="fcOverlay" onclick="handleOverlayClick(event)">
+    <div class="fc-modal" id="fcModal">
+      <div class="fc-modal-header">
+        <span class="fc-title" id="fcTitle">Flashcards</span>
+        <button class="fc-close" onclick="closeFlashcards()" title="Close">&times;</button>
+      </div>
+      <span class="fc-counter" id="fcCounter">Card 1 of 5</span>
+      <div class="fc-progress-track">
+        <div class="fc-progress-fill" id="fcProgressFill" style="width:20%"></div>
+      </div>
+      <div class="fc-scene" onclick="flipCard()">
+        <div class="fc-card" id="fcCard">
+          <div class="fc-face fc-front">
+            <span class="fc-face-label">Question</span>
+            <p class="fc-face-text" id="fcQuestion"></p>
+          </div>
+          <div class="fc-face fc-back">
+            <span class="fc-face-label">Answer</span>
+            <p class="fc-face-text" id="fcAnswer"></p>
+          </div>
+        </div>
+      </div>
+      <p class="fc-hint">Click the card to reveal the answer</p>
+      <div class="fc-controls">
+        <button class="fc-btn" id="fcPrev" onclick="prevCard()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Prev
+        </button>
+        <button class="fc-btn" id="fcNext" onclick="nextCard()">
+          Next
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <script src="data.js"></script>
   <script>
@@ -748,6 +959,64 @@
 
     const savedThemeInit = localStorage.getItem('theme') || 'dark';
     updateThemeIcon(savedThemeInit);
+
+    // ── Flashcard Logic ──
+    let fcCards = [];
+    let fcIndex = 0;
+
+    function openFlashcards(e) {
+      e.preventDefault();
+      fcCards = currentModule.flashcards || [];
+      if (fcCards.length === 0) { alert('No flashcards available for this module yet.'); return; }
+      fcIndex = 0;
+      document.getElementById('fcTitle').textContent = `${currentModule.icon} ${currentModule.title} — Flashcards`;
+      renderCard();
+      document.getElementById('fcOverlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFlashcards() {
+      document.getElementById('fcOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      // reset flip
+      document.getElementById('fcCard').classList.remove('flipped');
+    }
+
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('fcOverlay')) closeFlashcards();
+    }
+
+    function renderCard() {
+      const card = fcCards[fcIndex];
+      document.getElementById('fcQuestion').textContent = card.q;
+      document.getElementById('fcAnswer').textContent = card.a;
+      document.getElementById('fcCard').classList.remove('flipped');
+      document.getElementById('fcCounter').textContent = `Card ${fcIndex + 1} of ${fcCards.length}`;
+      document.getElementById('fcProgressFill').style.width = `${((fcIndex + 1) / fcCards.length) * 100}%`;
+      document.getElementById('fcPrev').disabled = fcIndex === 0;
+      document.getElementById('fcNext').disabled = fcIndex === fcCards.length - 1;
+    }
+
+    function flipCard() {
+      document.getElementById('fcCard').classList.toggle('flipped');
+    }
+
+    function nextCard() {
+      if (fcIndex < fcCards.length - 1) { fcIndex++; renderCard(); }
+    }
+
+    function prevCard() {
+      if (fcIndex > 0) { fcIndex--; renderCard(); }
+    }
+
+    // Keyboard support: arrow keys to navigate, space to flip, Escape to close
+    document.addEventListener('keydown', (e) => {
+      if (!document.getElementById('fcOverlay').classList.contains('open')) return;
+      if (e.key === 'Escape') closeFlashcards();
+      if (e.key === 'ArrowRight') nextCard();
+      if (e.key === 'ArrowLeft') prevCard();
+      if (e.key === ' ') { e.preventDefault(); flipCard(); }
+    });
   </script>
 </body>
 
