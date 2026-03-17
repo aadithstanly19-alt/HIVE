@@ -99,6 +99,13 @@ const coursesData = {
           { q: 'What is the difference between gRPC and REST?', a: 'REST uses HTTP/1.1 with JSON — human-readable, widely supported, but verbose. gRPC uses HTTP/2 with Protocol Buffers — faster binary serialization, strongly typed contracts, built-in streaming, better for inter-service calls.' },
           { q: 'What is the circuit breaker pattern?', a: 'A design pattern that detects when a downstream service is failing and "trips" to stop sending requests to it, preventing cascade failures. After a timeout, it allows limited requests through to test recovery.' },
           { q: 'What is service discovery in microservices?', a: 'The mechanism by which services automatically find and communicate with each other without hardcoded addresses. Tools like Consul, Eureka, or Kubernetes DNS dynamically register and resolve service locations.' },
+        ],
+        quiz: [
+          { q: 'In microservices, each service should own its own:', options: ['UI', 'Data and business logic', 'Load balancer', 'DNS entry'], correctIndex: 1 },
+          { q: "What is an API Gateway's main role?", options: ['Store microservice data', 'Single entry point routing requests to services', 'Run ML models', 'Synchronize databases'], correctIndex: 1 },
+          { q: 'Which protocol uses binary serialization and HTTP/2 for inter-service calls?', options: ['REST', 'SOAP', 'GraphQL', 'gRPC'], correctIndex: 3 },
+          { q: 'The circuit breaker pattern primarily helps prevent:', options: ['Data loss', 'Cascade failures', 'Slow DNS lookups', 'Memory leaks'], correctIndex: 1 },
+          { q: 'Which tool is NOT associated with service discovery?', options: ['Consul', 'Eureka', 'Kubernetes DNS', 'Redis Pub/Sub'], correctIndex: 3 },
         ]
       },
       {
@@ -109,6 +116,13 @@ const coursesData = {
           { q: 'What is a Cross-Site Scripting (XSS) attack?', a: 'An attacker injects malicious scripts into a trusted website, which then runs in the victim\'s browser. Prevented by escaping user input, using Content Security Policy (CSP), and avoiding innerHTML with untrusted data.' },
           { q: 'What is CSRF and how is it prevented?', a: 'Cross-Site Request Forgery tricks an authenticated user\'s browser into making unwanted requests. Prevention: use CSRF tokens (a unique, secret value verified server-side) or the SameSite cookie attribute.' },
           { q: 'What is TLS and what does it protect against?', a: 'Transport Layer Security encrypts data in transit between client and server. It protects against eavesdropping (man-in-the-middle attacks) and ensures the server\'s identity via certificates signed by a Certificate Authority.' },
+        ],
+        quiz: [
+          { q: 'Which comes first in a secure system?', options: ['Authorization', 'Authentication', 'Encryption', 'Rate Limiting'], correctIndex: 1 },
+          { q: "A JWT contains three parts. Which part proves it hasn't been tampered with?", options: ['Header', 'Payload', 'Signature', 'Nonce'], correctIndex: 2 },
+          { q: 'An XSS attack injects malicious scripts into:', options: ['The server database', 'A trusted website viewed by victims', 'DNS records', 'Network packets'], correctIndex: 1 },
+          { q: 'Which attribute on a cookie helps prevent CSRF attacks?', options: ['HttpOnly', 'Secure', 'SameSite', 'Expires'], correctIndex: 2 },
+          { q: 'TLS primarily encrypts data:', options: ['At rest in the database', 'In transit between client and server', 'In the application memory', 'In log files'], correctIndex: 1 },
         ]
       },
       {
@@ -119,6 +133,13 @@ const coursesData = {
           { q: 'What is chain-of-thought (CoT) prompting?', a: 'Encouraging the LLM to show its reasoning step-by-step before giving the final answer (e.g. "Let\'s think step by step"). This dramatically improves performance on complex reasoning and math problems.' },
           { q: 'What is a system prompt?', a: 'An instruction given to an LLM at the start of a conversation (often hidden from the user) that sets the model\'s persona, constraints, and behavior for the entire session. Used to customize the model\'s role.' },
           { q: 'What is hallucination in LLMs and how can it be mitigated?', a: 'Hallucination is when an LLM confidently generates factually incorrect information. Mitigations include Retrieval-Augmented Generation (RAG), asking the model to cite sources, instructing it to say "I don\'t know", and grounding prompts with real data.' },
+        ],
+        quiz: [
+          { q: 'Zero-shot prompting means:', options: ['Providing many examples', 'Providing a few examples', 'Providing no examples', 'Providing a system context'], correctIndex: 2 },
+          { q: 'Few-shot prompting is used to:', options: ['Reduce model size', 'Guide output format via examples', 'Speed up inference', 'Remove hallucinations entirely'], correctIndex: 1 },
+          { q: 'Chain-of-thought prompting improves LLM performance most on:', options: ['Image generation', 'Simple lookup questions', 'Complex reasoning and math', 'Code formatting'], correctIndex: 2 },
+          { q: 'A system prompt is typically:', options: ['Shown prominently to the user', 'Set by the user at any time', "Hidden from the user, setting the model's behavior", 'Used only for training'], correctIndex: 2 },
+          { q: 'What is LLM hallucination?', options: ['When the model runs slowly', 'When the model confidently generates false information', 'When the prompt is too long', 'When the model refuses to answer'], correctIndex: 1 },
         ]
       },
       {
@@ -129,6 +150,13 @@ const coursesData = {
           { q: 'What types of memory can an AI agent have?', a: 'In-context memory (within the prompt window), external memory (vector DBs for long-term retrieval), episodic memory (logs of past interactions), and procedural memory (fine-tuned behaviors or cached workflows).' },
           { q: 'What is tool use in the context of AI agents?', a: 'The ability of an agent to call external functions or APIs — like web search, code execution, database queries, or file I/O — to gather information or take actions beyond what the LLM knows internally.' },
           { q: 'What is a multi-agent system?', a: 'A system where multiple specialized AI agents collaborate, each handling a sub-task. An orchestrator agent delegates work to sub-agents (e.g. a planner, a coder, a reviewer), enabling complex parallel workflows.' },
+        ],
+        quiz: [
+          { q: "What is the 'core' of an AI agent's reasoning?", options: ['A search engine', 'A large language model (LLM)', 'A rule-based system', 'A relational database'], correctIndex: 1 },
+          { q: 'ReAct stands for:', options: ['Retrieve and Cache', 'Reasoning + Acting', 'React and Execute', 'Recursive Action Tree'], correctIndex: 1 },
+          { q: 'Which type of memory uses vector databases for long-term retrieval?', options: ['In-context memory', 'Procedural memory', 'External memory', 'Episodic memory'], correctIndex: 2 },
+          { q: 'Tool use in AI agents allows them to:', options: ['Run faster', 'Use less memory', 'Call external APIs and functions', 'Eliminate hallucinations'], correctIndex: 2 },
+          { q: 'In a multi-agent system, who typically delegates tasks?', options: ['The user directly', 'A sub-agent', 'The orchestrator agent', 'The database'], correctIndex: 2 },
         ]
       },
     ]
