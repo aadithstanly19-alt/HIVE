@@ -569,8 +569,8 @@
       <div class="sidebar-card">
         <h3>Study Resources</h3>
         <ul class="resource-list">
-          <li>
-            <a href="network_basics_notes (1).pdf" target="_blank" class="resource-item" id="pdfLink">
+          <li id="pdfLinkItem">
+            <a href="#" target="_blank" class="resource-item" id="pdfLink">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                 <polyline points="14 2 14 8 20 8"></polyline>
@@ -587,7 +587,7 @@
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
                 <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
               </svg>
-              Cheatsheet & Notes
+              Flashcards
             </a>
           </li>
           <li>
@@ -597,7 +597,7 @@
                 <line x1="12" y1="16" x2="12" y2="12"></line>
                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
-              Additional Reading Links
+              Quizzes
             </a>
           </li>
         </ul>
@@ -650,6 +650,13 @@
     document.getElementById('moduleName').textContent = currentModule.title;
     document.getElementById('moduleIcon').textContent = currentModule.icon;
     document.getElementById('moduleDesc').textContent = currentModule.desc;
+
+    // Wire up PDF link
+    if (currentModule.pdf) {
+      document.getElementById('pdfLink').href = currentModule.pdf;
+    } else {
+      document.getElementById('pdfLinkItem').style.display = 'none';
+    }
 
     // Helper to extract YouTube video ID and format embed URL
     function getYouTubeEmbedUrl(url) {
