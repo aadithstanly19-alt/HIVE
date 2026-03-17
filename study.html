@@ -474,7 +474,7 @@
     .fc-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.75);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
@@ -484,10 +484,12 @@
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
+
     .fc-overlay.open {
       opacity: 1;
       pointer-events: all;
     }
+
     .fc-modal {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -502,21 +504,25 @@
       transform: translateY(20px);
       transition: transform 0.3s ease;
     }
+
     .fc-overlay.open .fc-modal {
       transform: translateY(0);
     }
+
     .fc-modal-header {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .fc-title {
       font-family: 'Fraunces', serif;
       font-size: 1.2rem;
       font-weight: 700;
       color: var(--primary);
     }
+
     .fc-close {
       background: none;
       border: none;
@@ -527,12 +533,17 @@
       transition: color 0.2s;
       padding: 4px;
     }
-    .fc-close:hover { color: #e74c3c; }
+
+    .fc-close:hover {
+      color: #e74c3c;
+    }
+
     .fc-counter {
       font-size: 0.85rem;
       color: var(--text-muted);
       font-weight: 500;
     }
+
     /* 3D flip card */
     .fc-scene {
       width: 100%;
@@ -540,16 +551,19 @@
       perspective: 1000px;
       cursor: pointer;
     }
+
     .fc-card {
       width: 100%;
       height: 100%;
       position: relative;
       transform-style: preserve-3d;
-      transition: transform 0.55s cubic-bezier(0.4,0,0.2,1);
+      transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .fc-card.flipped {
       transform: rotateY(180deg);
     }
+
     .fc-face {
       position: absolute;
       inset: 0;
@@ -563,15 +577,18 @@
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
     }
+
     .fc-front {
-      background: linear-gradient(135deg, rgba(245,166,35,0.12), rgba(245,166,35,0.04));
-      border: 1px solid rgba(245,166,35,0.25);
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.12), rgba(245, 166, 35, 0.04));
+      border: 1px solid rgba(245, 166, 35, 0.25);
     }
+
     .fc-back {
-      background: linear-gradient(135deg, rgba(46,204,113,0.1), rgba(46,204,113,0.03));
-      border: 1px solid rgba(46,204,113,0.2);
+      background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(46, 204, 113, 0.03));
+      border: 1px solid rgba(46, 204, 113, 0.2);
       transform: rotateY(180deg);
     }
+
     .fc-face-label {
       font-size: 0.7rem;
       font-weight: 700;
@@ -580,24 +597,34 @@
       margin-bottom: 1rem;
       opacity: 0.5;
     }
-    .fc-front .fc-face-label { color: var(--primary); }
-    .fc-back .fc-face-label { color: var(--success); }
+
+    .fc-front .fc-face-label {
+      color: var(--primary);
+    }
+
+    .fc-back .fc-face-label {
+      color: var(--success);
+    }
+
     .fc-face-text {
       font-size: 1.05rem;
       line-height: 1.65;
       color: var(--text);
       font-weight: 500;
     }
+
     .fc-back .fc-face-text {
       font-size: 0.95rem;
       font-weight: 400;
       color: var(--text-muted);
     }
+
     .fc-hint {
       font-size: 0.78rem;
       color: var(--text-muted);
       opacity: 0.6;
     }
+
     .fc-controls {
       display: flex;
       align-items: center;
@@ -605,6 +632,7 @@
       width: 100%;
       justify-content: center;
     }
+
     .fc-btn {
       background: var(--glass);
       border: 1px solid var(--glass-border);
@@ -620,16 +648,19 @@
       align-items: center;
       gap: 6px;
     }
+
     .fc-btn:hover {
       background: var(--primary);
       color: #000;
       border-color: var(--primary);
     }
+
     .fc-btn:disabled {
       opacity: 0.3;
       cursor: not-allowed;
       pointer-events: none;
     }
+
     .fc-progress-track {
       width: 100%;
       height: 4px;
@@ -637,6 +668,7 @@
       border-radius: 4px;
       overflow: hidden;
     }
+
     .fc-progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--primary-dark), var(--primary));
@@ -659,10 +691,7 @@
       <a href="dashboard.html" class="nav-item">
         <span class="nav-icon">📊</span> Dashboard
       </a>
-      <a href="#" class="nav-item active">
-        <span class="nav-icon">📚</span> My Courses
-      </a>
-      <a href="#" class="nav-item">
+      <a href="certificates.html" class="nav-item">
         <span class="nav-icon">🏆</span> Certificates
       </a>
       <a href="#" class="nav-item">
@@ -825,12 +854,16 @@
       <p class="fc-hint">Click the card to reveal the answer</p>
       <div class="fc-controls">
         <button class="fc-btn" id="fcPrev" onclick="prevCard()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
           Prev
         </button>
         <button class="fc-btn" id="fcNext" onclick="nextCard()">
           Next
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
         </button>
       </div>
     </div>
@@ -934,7 +967,7 @@
 
     function markComplete() {
       let currentUnlocked = parseInt(localStorage.getItem(`highestUnlocked_${activeCourseId}`)) || 1;
-      if (moduleId === currentUnlocked && currentUnlocked < modules.length) {
+      if (moduleId === currentUnlocked && currentUnlocked <= modules.length) {
         localStorage.setItem(`highestUnlocked_${activeCourseId}`, currentUnlocked + 1);
       }
       window.location.href = 'dashboard.html';

@@ -364,13 +364,13 @@
       height: 160px;
       cursor: pointer;
       transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.12));
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.12));
       flex-shrink: 0;
     }
 
     .course-hex-wrapper:hover {
       transform: translateY(-6px);
-      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.22));
+      filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.22));
     }
 
     .course-hex-wrapper.active {
@@ -381,10 +381,8 @@
       width: 100%;
       height: 100%;
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      background: conic-gradient(
-        var(--primary) calc(var(--progress, 0) * 1%), 
-        rgba(255, 255, 255, 0.03) 0
-      );
+      background: conic-gradient(var(--primary) calc(var(--progress, 0) * 1%),
+          rgba(255, 255, 255, 0.03) 0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -392,12 +390,13 @@
     }
 
     .course-hex-inner {
-      width: calc(100% - 3px); /* Slightly thicker progress line */
+      width: calc(100% - 3px);
+      /* Slightly thicker progress line */
       height: calc(100% - 3px);
       clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      
+
       /* Premium multi-layered background: solid dark base with delicate top light */
-      background: linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%), var(--bg-card);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%), var(--bg-card);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       display: flex;
@@ -405,13 +404,13 @@
       align-items: center;
       justify-content: center;
       transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-      
+
       /* Subtle inner glow to define the shape better */
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .course-hex-wrapper:hover .course-hex-inner {
-      background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.02) 100%), var(--bg-card);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.02) 100%), var(--bg-card);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
@@ -424,12 +423,12 @@
       font-size: 2.8rem;
       margin-bottom: 8px;
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
     }
 
     .course-hex-wrapper:hover .course-hex-icon {
       transform: scale(1.15) translateY(-2px);
-      filter: drop-shadow(0 6px 8px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
     }
 
     .course-hex-title {
@@ -683,11 +682,7 @@
         <span class="nav-icon">📊</span>
         Dashboard
       </a>
-      <a href="#" class="nav-item">
-        <span class="nav-icon">📚</span>
-        My Courses
-      </a>
-      <a href="#" class="nav-item">
+      <a href="certificates.html" class="nav-item">
         <span class="nav-icon">🏆</span>
         Certificates
       </a>
@@ -860,7 +855,7 @@
         const completed = highestUnlocked - 1;
         // Optional calculation cap:
         const pct = Math.min(100, Math.round((completed / total) * 100));
-        
+
         const outerElement = document.querySelector(`#pill-${id} .course-hex-outer`);
         if (outerElement) {
           outerElement.style.setProperty('--progress', pct);
@@ -873,21 +868,21 @@
       document.getElementById(`pill-${courseId}`).classList.add('active');
       activeCourseId = courseId;
       modules = coursesData[courseId].modules;
-      
+
       const moduleSection = document.getElementById('moduleSection');
       const progressBarSection = document.getElementById('progressBarSection');
       const courseSelector = document.getElementById('courseSelector');
-      
+
       // Hide the course selector
       courseSelector.style.display = 'none';
-      
+
       moduleSection.style.display = 'block';
       progressBarSection.style.display = 'block';
       document.getElementById('dynamicCourseTitle').textContent = coursesData[courseId].title + ' Modules';
-      
+
       // Trigger reflow for fade-in animation
-      void moduleSection.offsetWidth; 
-      
+      void moduleSection.offsetWidth;
+
       moduleSection.style.opacity = '1';
       progressBarSection.style.opacity = '1';
 

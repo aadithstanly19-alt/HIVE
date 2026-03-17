@@ -14,7 +14,8 @@
     document.documentElement.setAttribute('data-theme', savedTheme);
   </script>
   <style>
-    :root, :root[data-theme="dark"] {
+    :root,
+    :root[data-theme="dark"] {
       --primary: #f5a623;
       --primary-hover: #d4831a;
       --bg: #0a0a0b;
@@ -22,7 +23,7 @@
       --text: #ffffff;
       --text-muted: #8a8a93;
       --border: #2a2a2e;
-      --input-bg: rgba(0,0,0,0.2);
+      --input-bg: rgba(0, 0, 0, 0.2);
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
     }
 
@@ -38,7 +39,11 @@
       --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     }
 
-    body, .card, input { transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+    body,
+    .card,
+    input {
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
 
     *,
     *::before,
@@ -79,7 +84,10 @@
       color: var(--text-muted);
       cursor: pointer;
     }
-    .theme-toggle:hover { color: var(--text); }
+
+    .theme-toggle:hover {
+      color: var(--text);
+    }
 
     .logo {
       display: flex;
@@ -310,6 +318,7 @@
       border-radius: 50%;
       animation: spin .7s linear infinite;
     }
+
     :root[data-theme="light"] .spinner {
       border-color: rgba(0, 0, 0, 0.1);
     }
@@ -332,7 +341,8 @@
   <!-- LOGIN CARD -->
   <div class="card" id="loginCard" style="display:none">
     <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-      <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="5"></circle>
         <line x1="12" y1="1" x2="12" y2="3"></line>
         <line x1="12" y1="21" x2="12" y2="23"></line>
