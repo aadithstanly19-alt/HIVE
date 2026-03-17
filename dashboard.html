@@ -200,20 +200,20 @@
     main {
       flex: 1;
       margin-left: 280px;
-      padding: 3rem 4rem;
-      max-width: 1400px;
+      padding: 2.5rem 3.5rem;
     }
 
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 2.5rem;
+      gap: 2rem;
     }
 
     .greeting h1 {
-      font-size: 2.6rem;
-      margin-bottom: 0.4rem;
+      font-size: 2rem;
+      margin-bottom: 0.25rem;
       font-weight: 700;
       line-height: 1.1;
     }
@@ -225,14 +225,44 @@
 
     .greeting p {
       color: var(--text-muted);
-      font-size: 1.05rem;
+      font-size: 0.95rem;
     }
 
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 4rem;
+    /* ── Inline Header Progress ── */
+    .header-progress {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 260px;
+    }
+
+    .header-progress-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .header-progress-label strong {
+      color: var(--primary);
+    }
+
+    .header-progress-track {
+      width: 100%;
+      height: 6px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .header-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      border-radius: 4px;
+      transition: width 0.8s ease;
+      box-shadow: 0 0 8px rgba(245, 166, 35, 0.5);
     }
 
     .stat-card {
@@ -252,19 +282,19 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(245,166,35,0.05) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.05) 0%, transparent 60%);
       pointer-events: none;
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(245,166,35,0.15);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(245, 166, 35, 0.15);
     }
 
     .stat-icon {
       width: 52px;
       height: 52px;
-      background: linear-gradient(135deg, rgba(245,166,35,0.15), rgba(245,166,35,0.05));
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.15), rgba(245, 166, 35, 0.05));
       border: 1px solid rgba(245, 166, 35, 0.2);
       border-radius: 8px;
       display: flex;
@@ -293,12 +323,15 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
     }
 
     .section-header h2 {
-      font-size: 1.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
     }
 
     .btn-view-all {
@@ -306,13 +339,106 @@
       border: none;
       color: var(--primary);
       font-family: inherit;
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
     }
 
     .btn-view-all:hover {
       text-decoration: underline;
+    }
+
+    /* ── Course Selector ── */
+    .course-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 3.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      justify-content: center;
+    }
+
+    .course-hex-wrapper {
+      position: relative;
+      width: 140px;
+      height: 160px;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+      flex-shrink: 0;
+    }
+
+    .course-hex-wrapper:hover {
+      transform: translateY(-8px);
+      filter: drop-shadow(0 12px 20px rgba(0,0,0,0.25));
+    }
+
+    .course-hex-wrapper.active {
+      filter: drop-shadow(0 0 16px rgba(245, 166, 35, 0.3));
+    }
+
+    .course-hex-outer {
+      width: 100%;
+      height: 100%;
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      /* Softened the border track for a cleaner look */
+      background: conic-gradient(
+        var(--primary) calc(var(--progress, 0) * 1%), 
+        rgba(255, 255, 255, 0.05) 0
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+
+    .course-hex-inner {
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      /* Cleaner glassmorphism base instead of solid dark bg */
+      background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.4s ease;
+    }
+
+    .course-hex-wrapper:hover .course-hex-inner {
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    }
+
+    .course-hex-wrapper.active .course-hex-inner {
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.12), rgba(245, 166, 35, 0.04));
+    }
+
+    .course-hex-icon {
+      font-size: 2.8rem;
+      margin-bottom: 6px;
+      transition: transform 0.3s ease;
+    }
+
+    .course-hex-wrapper:hover .course-hex-icon {
+      transform: scale(1.1);
+    }
+
+    .course-hex-title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: center;
+      line-height: 1.3;
+      padding: 0 12px;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease;
+    }
+
+    .course-hex-wrapper.active .course-hex-title {
+      color: var(--primary);
+      font-weight: 600;
     }
 
     /* ── Curriculum Progress Bar ── */
@@ -392,6 +518,7 @@
         opacity: 0;
         transform: translate(-50%, -50%) scale(0.5);
       }
+
       to {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
@@ -596,62 +723,63 @@
     <header>
       <div class="greeting">
         <h1>Welcome back, <span id="welcomeName">there</span> 👋</h1>
-        <p>Pick up right where you left off. Continue mastering your skills.</p>
+        <p>Continue mastering your skills — you're making great progress.</p>
       </div>
-      <div>
-        <button onclick="resetProgress()" style="background: var(--bg-card); border: 1px solid var(--glass-border); color: var(--text-muted); padding: 0.6rem 1.2rem; border-radius: 10px; cursor: pointer; font-family: inherit; font-weight: 500; transition: all 0.2s;">
-          ↺ Reset Progress
-        </button>
+      <div class="header-progress" id="progressBarSection" style="display: none; opacity: 0; transition: opacity 0.5s;">
+        <div class="header-progress-label">Curriculum &mdash; <strong><span id="progressPercent">0%</span></strong>
+        </div>
+        <div class="header-progress-track">
+          <div class="header-progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div style="font-size: 0.75rem; color: var(--text-muted);" id="progressLabel"></div>
       </div>
     </header>
 
-    <!-- Progress Bar -->
-    <div class="progress-section">
-      <div class="progress-meta">
-        <span id="progressLabel">Modules completed</span>
-        <span id="progressPercent">0%</span>
-      </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-      </div>
-    </div>
-
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon">🔥</div>
-        <div class="stat-info">
-          <p>Current Streak</p>
-          <h3>12 Days</h3>
+    <div class="course-selector" id="courseSelector">
+      <div class="course-hex-wrapper" onclick="switchCourse('cs')" id="pill-cs">
+        <div class="course-hex-outer">
+          <div class="course-hex-inner">
+            <div class="course-hex-icon">💻</div>
+            <div class="course-hex-title">Computer Science</div>
+          </div>
         </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">⭐</div>
-        <div class="stat-info">
-          <p>Total XP</p>
-          <h3>4,250</h3>
+      <div class="course-hex-wrapper" onclick="switchCourse('pharmacy')" id="pill-pharmacy">
+        <div class="course-hex-outer">
+          <div class="course-hex-inner">
+            <div class="course-hex-icon">💊</div>
+            <div class="course-hex-title">Pharmacy</div>
+          </div>
         </div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon">🎓</div>
-        <div class="stat-info">
-          <p>Courses Completed</p>
-          <h3>2</h3>
+      <div class="course-hex-wrapper" onclick="switchCourse('accounting')" id="pill-accounting">
+        <div class="course-hex-outer">
+          <div class="course-hex-inner">
+            <div class="course-hex-icon">📈</div>
+            <div class="course-hex-title">Accounting</div>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="section-header">
-      <h2>In Progress</h2>
-      <button class="btn-view-all">View Curriculum →</button>
-    </div>
+    <div id="moduleSection" style="display: none; opacity: 0; transition: opacity 0.5s;">
+      <div class="section-header">
+        <h2 id="dynamicCourseTitle">Modules</h2>
+        <div style="display: flex; gap: 1rem;">
+          <button class="btn-view-all" onclick="showCourseSelector()">« Change Course</button>
+          <button class="btn-view-all" onclick="resetProgress()">↺ Reset</button>
+        </div>
+      </div>
 
-    <div class="honeycomb-container">
-      <div class="honeycomb" id="hexagonGrid">
-        <!-- Rendered by JS -->
+      <div class="honeycomb-container">
+        <div class="honeycomb" id="hexagonGrid">
+          <!-- Rendered by JS -->
+        </div>
       </div>
     </div>
   </main>
 
+  <script src="data.js"></script>
   <script>
     const SUPABASE_URL = 'https://gabpzpkkrbxiyeopyhby.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdhYnB6cGtrcmJ4aXllb3B5aGJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3MjA0NzUsImV4cCI6MjA4OTI5NjQ3NX0.sSosG5y6ErjiibcO74moTt103QYtnFZqZQ12tLpJB9g';
@@ -696,31 +824,75 @@
       }
     });
 
-    // ── Honeycomb Logic ──
-    const modules = [
-      { id: 1, title: 'Network Basics', icon: '🌐', desc: 'An introduction to how the internet actually works. Covering the basics of IP addresses, routers, packets, and how computers communicate across the globe.', video: 'https://www.youtube.com/embed/_IOZ8_cPgu8' },
-      { id: 2, title: 'System Design', icon: '⚡', desc: 'Core principles of designing scalable, highly-available distributed systems. Topics include load balancing, horizontal vs vertical scaling, and CAP theorem.', video: '' },
-      { id: 3, title: 'Databases', icon: '💾', desc: 'Deep dive into relational (SQL) vs non-relational (NoSQL) databases, ACID properties, sharding, replication strategies, and choosing the right DB for the job.', video: '' },
-      { id: 4, title: 'Caching', icon: '🚀', desc: 'Strategies for minimizing latency using in-memory data stores like Redis and Memcached, CDN architectures, and cache invalidation policies.', video: '' },
-      { id: 5, title: 'Message Queues', icon: '📫', desc: 'Decoupling services using asynchronous communication patterns with tools like Kafka and RabbitMQ to ensure reliable data delivery and event-driven architecture.', video: '' },
-      { id: 6, title: 'Microservices', icon: '🧩', desc: 'Breaking down monoliths into independent deployable microservices, handling inter-service communication (gRPC/REST), and API Gateways.', video: '' },
-      { id: 7, title: 'Security', icon: '🔒', desc: 'Implementing robust security postures, TLS/SSL termination, OAuth/JWT authentication flows, rate limiting, and protecting against common vulnerabilities (DDoS, XSS, CSRF).', video: '' },
-      { id: 8, title: 'Prompt Eng.', icon: '🤖', desc: 'Techniques for effectively conversing with LLMs: zero-shot vs few-shot prompting, chain-of-thought, system prompts, and mitigating hallucinations.', video: '' },
-      { id: 9, title: 'Agents', icon: '🧠', desc: 'Building autonomous AI systems that iterate, plan, use external tools, and manage long-term memory to solve complex multi-step problems.', video: '' }
-    ];
+    // ── Multi-Course Honeycomb Logic ──
+    let activeCourseId = null;
+    let modules = [];
+
+    // Migrate old generic highestUnlocked to cs
+    if (!localStorage.getItem('highestUnlocked_cs') && localStorage.getItem('highestUnlocked')) {
+      localStorage.setItem('highestUnlocked_cs', localStorage.getItem('highestUnlocked'));
+    }
+
+    function getHighestUnlocked() {
+      if (!activeCourseId) return 1;
+      return parseInt(localStorage.getItem(`highestUnlocked_${activeCourseId}`)) || 1;
+    }
+
+    function renderCoursePills() {
+      // Calculate and apply progress to the borders of the selector hexagons
+      // Using CSS property --progress inside .course-hex-outer
+      const pillIds = ['cs', 'pharmacy', 'accounting'];
+      pillIds.forEach(id => {
+        const total = coursesData[id].modules.length;
+        const highestUnlocked = parseInt(localStorage.getItem(`highestUnlocked_${id}`)) || 1;
+        const completed = highestUnlocked - 1;
+        // Optional calculation cap:
+        const pct = Math.min(100, Math.round((completed / total) * 100));
+        
+        const outerElement = document.querySelector(`#pill-${id} .course-hex-outer`);
+        if (outerElement) {
+          outerElement.style.setProperty('--progress', pct);
+        }
+      });
+    }
+
+    function switchCourse(courseId) {
+      document.querySelectorAll('.course-hex-wrapper').forEach(hex => hex.classList.remove('active'));
+      document.getElementById(`pill-${courseId}`).classList.add('active');
+      activeCourseId = courseId;
+      modules = coursesData[courseId].modules;
+      
+      const moduleSection = document.getElementById('moduleSection');
+      const progressBarSection = document.getElementById('progressBarSection');
+      const courseSelector = document.getElementById('courseSelector');
+      
+      // Hide the course selector
+      courseSelector.style.display = 'none';
+      
+      moduleSection.style.display = 'block';
+      progressBarSection.style.display = 'block';
+      document.getElementById('dynamicCourseTitle').textContent = coursesData[courseId].title + ' Modules';
+      
+      // Trigger reflow for fade-in animation
+      void moduleSection.offsetWidth; 
+      
+      moduleSection.style.opacity = '1';
+      progressBarSection.style.opacity = '1';
+
+      renderHoneycomb();
+      updateProgressBar();
+    }
+
+    function showCourseSelector() {
+      document.getElementById('moduleSection').style.display = 'none';
+      document.getElementById('progressBarSection').style.display = 'none';
+      document.getElementById('courseSelector').style.display = 'flex';
+    }
 
     // Math for pointy-topped hexagons:
-    // Width = w (130)
-    // Horizontal distance between centers = w (130)
-    // Vertical distance between centers = height * 0.75 (150 * 0.75 = 112.5)
-    // Offset for odd rows = w / 2 (65)
-
     const w = 136; // horizontal spacing slightly wider for gap
     const h = 118; // vertical spacing slightly wider for gap
-    
-    // First ring around center: 
-    // Top-Right, Right, Bottom-Right, Bottom-Left, Left, Top-Left
-    // Second ring follows
+
     const positions = [
       { x: 0, y: 0 },             // 1: Center
       { x: w / 2, y: -h },        // 2: Top Right
@@ -733,10 +905,8 @@
       { x: w, y: -h * 2 }         // 9: Outer Top Right
     ];
 
-    // Read progression from local storage (default to module 1 unlocked)
-    let highestUnlocked = parseInt(localStorage.getItem('highestUnlocked')) || 1;
-
     function updateProgressBar() {
+      const highestUnlocked = getHighestUnlocked();
       const completed = highestUnlocked - 1;
       const total = modules.length;
       const pct = Math.round((completed / total) * 100);
@@ -748,6 +918,7 @@
     function renderHoneycomb() {
       const grid = document.getElementById('hexagonGrid');
       grid.innerHTML = '';
+      const highestUnlocked = getHighestUnlocked();
 
       modules.forEach((mod, index) => {
         let stateClass = 'locked';
@@ -768,7 +939,7 @@
         wrapper.style.top = `${pos.y}px`;
         // add staggered animation delay based on index so they pop in nicely
         wrapper.style.animationDelay = `${index * 0.1}s`;
-        
+
         wrapper.innerHTML = `
           <div class="hex ${stateClass}" onclick="handleHexClick(${mod.id})">
             <div class="hex-content">
@@ -782,20 +953,22 @@
     }
 
     function handleHexClick(id) {
+      const highestUnlocked = getHighestUnlocked();
       if (id > highestUnlocked) {
         return;
       }
-      window.location.href = `study.html?module=${id}`;
+      window.location.href = `study.html?course=${activeCourseId}&module=${id}`;
     }
 
-    // Render immediately
-    renderHoneycomb();
-    updateProgressBar();
+    // Initialize the radial progress for the course selector on page load
+    renderCoursePills();
+
+    // Render empty state initially (no course selected)
+    // Removed immediate rendering to match requirement
 
     function resetProgress() {
-      if (confirm('Are you sure you want to reset all your module progression?')) {
-        localStorage.setItem('highestUnlocked', 1);
-        highestUnlocked = 1;
+      if (confirm(`Are you sure you want to reset your progression for ${coursesData[activeCourseId].title}?`)) {
+        localStorage.setItem(`highestUnlocked_${activeCourseId}`, 1);
         renderHoneycomb();
         updateProgressBar();
       }

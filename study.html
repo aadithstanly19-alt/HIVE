@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study Material - Hive Learning</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..900&family=Outfit:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -40,7 +43,13 @@
       --success: #27ae60;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       min-height: 100vh;
@@ -51,41 +60,154 @@
       display: flex;
     }
 
-    h1, h2, h3, .logo-text { font-family: 'Fraunces', serif; }
+    h1,
+    h2,
+    h3,
+    .logo-text {
+      font-family: 'Fraunces', serif;
+    }
 
     /* ── Sidebar ── */
     aside {
-      width: 280px; height: 100vh; 
+      width: 280px;
+      height: 100vh;
       background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg) 100%);
       border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; position: fixed; left: 0; top: 0; z-index: 50;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 50;
     }
-    .logo-area { padding: 2rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
-    .logo-hex { width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%); box-shadow: 0 0 16px rgba(245, 166, 35, 0.4); }
-    .logo-text { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px;
+
+    .logo-area {
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-hex {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+      box-shadow: 0 0 16px rgba(245, 166, 35, 0.4);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
       background: linear-gradient(90deg, var(--text), var(--primary));
-      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .nav-menu { padding: 2rem 1rem; flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
-    .nav-item { display: flex; align-items: center; gap: 12px; padding: 1rem 1.5rem; color: var(--text-muted); text-decoration: none; border-radius: 6px; font-weight: 500; transition: all 0.2s; cursor: pointer; }
-    .nav-item:hover { background: var(--glass); color: var(--text); }
-    .nav-item.active { background: linear-gradient(90deg, rgba(245,166,35,0.12), rgba(245,166,35,0.04)); color: var(--primary); border: 1px solid rgba(245, 166, 35, 0.2); box-shadow: inset 3px 0 0 var(--primary); }
-    .nav-icon { font-size: 1.25rem; }
+    .nav-menu {
+      padding: 2rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
 
-    .user-area { padding: 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-    .user-info { display: flex; align-items: center; gap: 12px; }
-    .avatar { width: 42px; height: 42px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #000; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; box-shadow: 0 0 14px rgba(245, 166, 35, 0.35); }
-    .user-details h4 { font-size: 0.95rem; margin-bottom: 2px; }
-    .user-details p { font-size: 0.8rem; color: var(--text-muted); }
-    .btn-logout { background: none; border: none; color: var(--text-muted); cursor: pointer; transition: color 0.2s; }
-    .btn-logout:hover { color: #e74c3c; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 1rem 1.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: var(--glass);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(245, 166, 35, 0.12), rgba(245, 166, 35, 0.04));
+      color: var(--primary);
+      border: 1px solid rgba(245, 166, 35, 0.2);
+      box-shadow: inset 3px 0 0 var(--primary);
+    }
+
+    .nav-icon {
+      font-size: 1.25rem;
+    }
+
+    .user-area {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #000;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      box-shadow: 0 0 14px rgba(245, 166, 35, 0.35);
+    }
+
+    .user-details h4 {
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .user-details p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .btn-logout {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .btn-logout:hover {
+      color: #e74c3c;
+    }
 
     /* ── Main Content ── */
-    main { flex: 1; margin-left: 280px; padding: 3rem 4rem; max-width: 1200px; }
+    main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2.5rem 3.5rem;
+    }
 
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
     .back-btn {
       display: inline-flex;
       align-items: center;
@@ -94,20 +216,36 @@
       text-decoration: none;
       font-weight: 500;
       transition: all 0.2s;
-      margin-bottom: 1.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 8px;
+      margin-bottom: 1rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
       border: 1px solid transparent;
+      font-size: 0.9rem;
     }
+
     .back-btn:hover {
       color: var(--primary);
       border-color: var(--border);
       background: var(--glass);
     }
-    
-    .greeting h1 { font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 600; display:flex; align-items:center; gap: 12px; }
-    .greeting h1 span { color: var(--primary); font-style: italic; }
-    .greeting p { color: var(--text-muted); font-size: 1.1rem; }
+
+    .greeting h1 {
+      font-size: 1.8rem;
+      margin-bottom: 0.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .greeting h1 span {
+      color: var(--primary);
+    }
+
+    .greeting p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
 
     /* ── Study Content Area ── */
     .study-container {
@@ -120,7 +258,7 @@
     .video-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 10px;
       overflow: hidden;
     }
 
@@ -139,7 +277,8 @@
 
     .video-placeholder iframe {
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
@@ -171,20 +310,23 @@
     }
 
     .content-details {
-      padding: 2rem;
+      padding: 1.5rem 2rem;
     }
 
     .content-details h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
       font-family: 'Outfit';
       font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
     }
 
     .content-details p {
       color: var(--text-muted);
       line-height: 1.7;
-      margin-bottom: 1rem;
+      font-size: 0.95rem;
     }
 
     /* Transcript/Notes sidebar */
@@ -201,7 +343,9 @@
     .sidebar-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: linear-gradient(90deg, var(--primary-dark), var(--primary));
     }
@@ -268,18 +412,30 @@
     .study-progress {
       margin-bottom: 1.5rem;
     }
+
     .study-progress-meta {
-      display: flex; justify-content: space-between;
-      font-size: 0.9rem; font-weight: 500; color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
       margin-bottom: 0.5rem;
     }
-    .study-progress-meta strong { color: var(--primary); font-size: 1rem; }
+
+    .study-progress-meta strong {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
     .study-progress-track {
-      width: 100%; height: 6px;
+      width: 100%;
+      height: 6px;
       background: var(--glass);
       border: 1px solid var(--glass-border);
-      border-radius: 4px; overflow: hidden;
+      border-radius: 4px;
+      overflow: hidden;
     }
+
     .study-progress-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--primary-dark), var(--primary));
@@ -289,16 +445,42 @@
     }
 
     /* Loading Spinner */
-    #loadingScreen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 999; }
-    .spinner { width: 40px; height: 40px; border: 3px solid var(--glass-border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--glass-border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
   </style>
 </head>
+
 <body>
-  <div id="loadingScreen"><div class="spinner"></div></div>
+  <div id="loadingScreen">
+    <div class="spinner"></div>
+  </div>
 
   <aside>
-    <div class="logo-area"><div class="logo-hex"></div><span class="logo-text">Hive.</span></div>
+    <div class="logo-area">
+      <div class="logo-hex"></div><span class="logo-text">Hive.</span>
+    </div>
     <div class="nav-menu">
       <a href="dashboard.html" class="nav-item">
         <span class="nav-icon">📊</span> Dashboard
@@ -323,13 +505,25 @@
       </div>
       <div style="display:flex; gap: 8px;">
         <button class="btn-logout" title="Toggle Theme" onclick="toggleTheme()">
-          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
           </svg>
         </button>
         <button class="btn-logout" title="Sign out" onclick="logout()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
         </button>
       </div>
@@ -338,7 +532,11 @@
 
   <main>
     <a href="dashboard.html" class="back-btn">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
       Back to Dashboard
     </a>
 
@@ -360,8 +558,11 @@
         </div>
         <div class="content-details">
           <h2>Overview & Objectives</h2>
-          <p id="moduleDesc">In this module, we will explore the core concepts that define this topic. You will learn the theoretical foundations and the practical implementations that make this an essential piece of the puzzle.</p>
-          <p>By the end of this lecture, you should understand how to configure, optimize, and reliably deploy these systems in production environments. Pay special attention to the case studies at the 15-minute mark.</p>
+          <p id="moduleDesc">In this module, we will explore the core concepts that define this topic. You will learn
+            the theoretical foundations and the practical implementations that make this an essential piece of the
+            puzzle.</p>
+          <p>By the end of this lecture, you should understand how to configure, optimize, and reliably deploy these
+            systems in production environments. Pay special attention to the case studies at the 15-minute mark.</p>
         </div>
       </div>
 
@@ -370,19 +571,32 @@
         <ul class="resource-list">
           <li>
             <a href="network_basics_notes (1).pdf" target="_blank" class="resource-item" id="pdfLink">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
               Lecture Notes (PDF)
             </a>
           </li>
           <li>
             <a href="#" class="resource-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
               Cheatsheet & Notes
             </a>
           </li>
           <li>
             <a href="#" class="resource-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
               Additional Reading Links
             </a>
           </li>
@@ -400,26 +614,19 @@
         </div>
 
         <button class="btn-complete" onclick="markComplete()">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
           Mark Module Complete
         </button>
       </div>
     </div>
   </main>
 
+  <script src="data.js"></script>
   <script>
-    // Module Database
-    const modules = [
-      { id: 1, title: 'Network Basics', icon: '🌐', desc: 'An introduction to how the internet actually works. Covering the basics of IP addresses, routers, packets, and how computers communicate across the globe.', video: 'https://www.youtube.com/embed/_IOZ8_cPgu8' },
-      { id: 2, title: 'System Design', icon: '⚡', desc: 'Core principles of designing scalable, highly-available distributed systems. Topics include load balancing, horizontal vs vertical scaling, and CAP theorem.', video: '' },
-      { id: 3, title: 'Databases', icon: '💾', desc: 'Deep dive into relational (SQL) vs non-relational (NoSQL) databases, ACID properties, sharding, replication strategies, and choosing the right DB for the job.', video: '' },
-      { id: 4, title: 'Caching', icon: '🚀', desc: 'Strategies for minimizing latency using in-memory data stores like Redis and Memcached, CDN architectures, and cache invalidation policies.', video: '' },
-      { id: 5, title: 'Message Queues', icon: '📫', desc: 'Decoupling services using asynchronous communication patterns with tools like Kafka and RabbitMQ to ensure reliable data delivery and event-driven architecture.', video: '' },
-      { id: 6, title: 'Microservices', icon: '🧩', desc: 'Breaking down monoliths into independent deployable microservices, handling inter-service communication (gRPC/REST), and API Gateways.', video: '' },
-      { id: 7, title: 'Security', icon: '🔒', desc: 'Implementing robust security postures, TLS/SSL termination, OAuth/JWT authentication flows, rate limiting, and protecting against common vulnerabilities (DDoS, XSS, CSRF).', video: '' },
-      { id: 8, title: 'Prompt Eng.', icon: '🤖', desc: 'Techniques for effectively conversing with LLMs: zero-shot vs few-shot prompting, chain-of-thought, system prompts, and mitigating hallucinations.', video: '' },
-      { id: 9, title: 'Agents', icon: '🧠', desc: 'Building autonomous AI systems that iterate, plan, use external tools, and manage long-term memory to solve complex multi-step problems.', video: '' }
-    ];
 
     // Supabase Auth Code
     const SUPABASE_URL = 'https://gabpzpkkrbxiyeopyhby.supabase.co';
@@ -433,23 +640,51 @@
       if (event === 'SIGNED_OUT') window.location.href = 'index.html';
     });
 
-    // Extract Module ID from URL
+    // Extract Course and Module ID from URL
     const urlParams = new URLSearchParams(window.location.search);
+    const activeCourseId = urlParams.get('course') || 'cs';
+    const modules = coursesData[activeCourseId] ? coursesData[activeCourseId].modules : coursesData['cs'].modules;
     const moduleId = parseInt(urlParams.get('module')) || 1;
     const currentModule = modules.find(m => m.id === moduleId) || modules[0];
-    
+
     document.getElementById('moduleName').textContent = currentModule.title;
     document.getElementById('moduleIcon').textContent = currentModule.icon;
     document.getElementById('moduleDesc').textContent = currentModule.desc;
 
+    // Helper to extract YouTube video ID and format embed URL
+    function getYouTubeEmbedUrl(url) {
+      if (!url) return '';
+      if (url.includes('youtube.com/embed/')) return url;
+
+      let videoId = '';
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+      } else if (url.includes('youtube.com/watch')) {
+        const urlParams = new URLSearchParams(url.split('?')[1]);
+        videoId = urlParams.get('v');
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+
     // Inject Video if available
     if (currentModule.video) {
-        const videoContainer = document.getElementById('videoContainer');
-        videoContainer.innerHTML = `<iframe src="${currentModule.video}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+      const formattedEmbedUrl = getYouTubeEmbedUrl(currentModule.video);
+      document.getElementById('videoContainer').innerHTML =
+        `<iframe width="100%" height="100%" src="${formattedEmbedUrl}" frameborder="0" allowfullscreen></iframe>`;
+
+      // Add fallback link using the original provided URL
+      const watchBtn = document.createElement('a');
+      watchBtn.href = currentModule.video;
+      watchBtn.target = "_blank";
+      watchBtn.innerHTML = '🔗 Watch directly on YouTube ↗';
+      watchBtn.style.cssText = 'display: inline-block; margin-bottom: 1.5rem; background: var(--glass); color: var(--primary); padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 0.9rem; border: 1px solid var(--glass-border); transition: all 0.2s;';
+
+      const contentDetails = document.querySelector('.content-details');
+      contentDetails.insertBefore(watchBtn, contentDetails.firstChild);
     }
 
     // Populate progress bar
-    const highestUnlocked = parseInt(localStorage.getItem('highestUnlocked')) || 1;
+    let highestUnlocked = parseInt(localStorage.getItem(`highestUnlocked_${activeCourseId}`)) || 1;
     const completedCount = highestUnlocked - 1;
     const total = modules.length;
     const pct = Math.round((completedCount / total) * 100);
@@ -463,7 +698,7 @@
 
       const user = session.user;
       let name = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split('@')[0] || 'there';
-      
+
       document.getElementById('userName').textContent = name;
       document.getElementById('userEmail').textContent = user.email || '';
       document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
@@ -471,8 +706,8 @@
       document.getElementById('loadingScreen').style.display = 'none';
 
       // Check if trying to access a locked module
-      let highestUnlocked = parseInt(localStorage.getItem('highestUnlocked')) || 1;
-      if (moduleId > highestUnlocked) {
+      let currentUnlocked = parseInt(localStorage.getItem(`highestUnlocked_${activeCourseId}`)) || 1;
+      if (moduleId > currentUnlocked) {
         alert("This module is locked!");
         window.location.href = 'dashboard.html';
       }
@@ -480,9 +715,9 @@
     init();
 
     function markComplete() {
-      let highestUnlocked = parseInt(localStorage.getItem('highestUnlocked')) || 1;
-      if (moduleId === highestUnlocked && highestUnlocked < modules.length) {
-        localStorage.setItem('highestUnlocked', highestUnlocked + 1);
+      let currentUnlocked = parseInt(localStorage.getItem(`highestUnlocked_${activeCourseId}`)) || 1;
+      if (moduleId === currentUnlocked && currentUnlocked < modules.length) {
+        localStorage.setItem(`highestUnlocked_${activeCourseId}`, currentUnlocked + 1);
       }
       window.location.href = 'dashboard.html';
     }
@@ -503,9 +738,10 @@
         icon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
       }
     }
-    
+
     const savedThemeInit = localStorage.getItem('theme') || 'dark';
     updateThemeIcon(savedThemeInit);
   </script>
 </body>
+
 </html>
