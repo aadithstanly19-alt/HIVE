@@ -632,16 +632,25 @@
       <a href="dashboard.html" class="nav-item">
         <span class="nav-icon">📊</span> Dashboard
       </a>
+      <a href="behaviour.html" class="nav-item">
+        <span class="nav-icon">🧠</span> Behaviour
+      </a>
       <a href="certificates.html" class="nav-item active">
         <span class="nav-icon">🏆</span> Certificates
       </a>
       <a href="quiz.html" class="nav-item">
         <span class="nav-icon">📝</span> Quizzes
       </a>
+      <a href="flashcards.html" class="nav-item">
+        <span class="nav-icon">📇</span> Flashcards
+      </a>
       <a href="analytics.html" class="nav-item">
         <span class="nav-icon">📈</span> Analytics
       </a>
-      <a href="#" class="nav-item">
+      <a href="ai-chat.html" class="nav-item">
+        <span class="nav-icon">🐝</span> AI Tutor
+      </a>
+      <a href="settings.html" class="nav-item">
         <span class="nav-icon">⚙️</span> Settings
       </a>
     </div>
@@ -855,10 +864,11 @@
     }
 
     const savedThemeInit = localStorage.getItem('theme') || 'dark';
-    updateThemeIcon(savedThemeInit);
+    updateThemeIcon(localStorage.getItem('theme') || 'dark');
 
     init();
   </script>
+  <script src="bee-timer.js"></script>
 </body>
 
 </html>

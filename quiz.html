@@ -294,16 +294,25 @@
       <a href="dashboard.html" class="nav-item">
         <span class="nav-icon">📊</span> Dashboard
       </a>
+      <a href="behaviour.html" class="nav-item">
+        <span class="nav-icon">🧠</span> Behaviour
+      </a>
       <a href="certificates.html" class="nav-item">
         <span class="nav-icon">🏆</span> Certificates
       </a>
       <a href="quiz.html" class="nav-item active">
         <span class="nav-icon">📝</span> Quizzes
       </a>
+      <a href="flashcards.html" class="nav-item">
+        <span class="nav-icon">📇</span> Flashcards
+      </a>
       <a href="analytics.html" class="nav-item">
         <span class="nav-icon">📈</span> Analytics
       </a>
-      <a href="#" class="nav-item">
+      <a href="ai-chat.html" class="nav-item">
+        <span class="nav-icon">🐝</span> AI Tutor
+      </a>
+      <a href="settings.html" class="nav-item">
         <span class="nav-icon">⚙️</span> Settings
       </a>
     </div>
@@ -357,7 +366,11 @@
     <div id="quizView">
       <div class="quiz-topbar">
         <span class="quiz-course-label" id="quizCourseLabel">📝 Quiz</span>
-        <button class="btn-again" onclick="backToSelection()" style="padding: 0.4rem 1rem; font-size: 0.8rem;">✕ Exit Quiz</button>
+        <div style="display:flex; align-items:center; gap: 12px;">
+          <span class="quiz-run-difficulty" id="qDifficultyBadge" style="padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; background: var(--glass);">🟢 Easy</span>
+          <button class="btn-again" id="btnStopAudio" onclick="TTS.stop()" style="padding: 0.4rem 1rem; font-size: 0.8rem; display: none;">🔇 Stop</button>
+          <button class="btn-again" onclick="backToSelection()" style="padding: 0.4rem 1rem; font-size: 0.8rem;">✕ Exit Quiz</button>
+        </div>
       </div>
       <div class="quiz-meta-row">
         <span id="qCounter">Question 1 of 0</span>
@@ -450,46 +463,114 @@
     }
 
     // ── Quiz Engine ──
-    let allQuestions = [];
+    let questionPools = { easy: [], medium: [], hard: [] };
+    let currentQuestion = null;
     let qIndex = 0;
     let qScore = 0;
     let qAnswered = false;
+    
+    let currentDifficulty = 'easy';
+    let sessionLimit = 20;
+    let consecutiveCorrect = 0;
+    let consecutiveWrong = 0;
+    let difficultyLadder = ['easy', 'medium', 'hard'];
 
-    function buildQuestions(courseId) {
-      const questions = [];
+    function buildQuestionPools(courseId) {
+      let pools = { easy: [], medium: [], hard: [] };
       coursesData[courseId].modules.forEach(mod => {
         if (!mod.quiz || mod.quiz.length === 0) return;
         mod.quiz.forEach(q => {
-          questions.push({ ...q, moduleName: mod.title, moduleIcon: mod.icon });
+          const diff = q.difficulty || 'easy';
+          if (pools[diff]) {
+            pools[diff].push({ ...q, moduleName: mod.title, moduleIcon: mod.icon });
+          }
         });
       });
-      // Shuffle
-      for (let i = questions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [questions[i], questions[j]] = [questions[j], questions[i]];
-      }
-      return questions;
+      // Shuffle all pools
+      ['easy', 'medium', 'hard'].forEach(diff => {
+        for (let i = pools[diff].length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [pools[diff][i], pools[diff][j]] = [pools[diff][j], pools[diff][i]];
+        }
+      });
+      return pools;
     }
 
     function startQuiz() {
-      allQuestions = buildQuestions(selectedCourseId);
-      qIndex = 0; qScore = 0;
+      // Load saved difficulty or start at easy
+      currentDifficulty = localStorage.getItem(`quiz_difficulty_${selectedCourseId}`) || 'easy';
+      if (!difficultyLadder.includes(currentDifficulty)) currentDifficulty = 'easy';
+      
+      questionPools = buildQuestionPools(selectedCourseId);
+      
+      // Calculate max questions available
+      const totalAvailable = questionPools.easy.length + questionPools.medium.length + questionPools.hard.length;
+      sessionLimit = Math.min(20, totalAvailable);
+      
+      qIndex = 0; 
+      qScore = 0;
+      consecutiveCorrect = 0;
+      consecutiveWrong = 0;
+      
       document.getElementById('selectionView').style.display = 'none';
       document.getElementById('resultsView').classList.remove('show');
       document.getElementById('quizView').style.display = 'block';
       const course = coursesData[selectedCourseId];
-      document.getElementById('quizCourseLabel').textContent = `${course.icon} ${course.title} — Full Course Quiz`;
+      document.getElementById('quizCourseLabel').textContent = `${course.icon} ${course.title} — Adaptive Quiz`;
+      
+      document.getElementById('btnStopAudio').style.display = TTS.isEnabled() ? 'block' : 'none';
+
+      fetchNextQuestion();
       renderQ();
     }
 
+    function fetchNextQuestion() {
+      // Try to get from current difficulty, fallback if empty
+      if (questionPools[currentDifficulty].length > 0) {
+        currentQuestion = questionPools[currentDifficulty].pop();
+      } else {
+        // Fallback to remaining pools
+        const fallbackOrder = difficultyLadder.filter(d => d !== currentDifficulty);
+        if (questionPools[fallbackOrder[0]].length > 0) {
+          currentDifficulty = fallbackOrder[0];
+          currentQuestion = questionPools[currentDifficulty].pop();
+        } else if (questionPools[fallbackOrder[1]].length > 0) {
+          currentDifficulty = fallbackOrder[1];
+          currentQuestion = questionPools[currentDifficulty].pop();
+        } else {
+          currentQuestion = null; // No questions left globally
+        }
+      }
+    }
+
+    function updateDifficultyBadge() {
+      const badge = document.getElementById('qDifficultyBadge');
+      if (currentDifficulty === 'easy') {
+        badge.innerHTML = '🟢 Easy';
+        badge.style.color = 'var(--success)';
+      } else if (currentDifficulty === 'medium') {
+        badge.innerHTML = '🟡 Medium';
+        badge.style.color = 'var(--primary)';
+      } else {
+        badge.innerHTML = '🔴 Hard';
+        badge.style.color = '#e74c3c';
+      }
+    }
+
     function renderQ() {
+      if (!currentQuestion) {
+        finishQuiz();
+        return;
+      }
+
       qAnswered = false;
-      const q = allQuestions[qIndex];
-      document.getElementById('qCounter').textContent = `Question ${qIndex + 1} of ${allQuestions.length}`;
+      updateDifficultyBadge();
+
+      document.getElementById('qCounter').textContent = `Question ${qIndex + 1} of ${sessionLimit}`;
       document.getElementById('qScore').textContent = `Score: ${qScore}`;
-      document.getElementById('qProgress').style.width = `${((qIndex + 1) / allQuestions.length) * 100}%`;
-      document.getElementById('qModuleTag').textContent = `${q.moduleIcon} ${q.moduleName}`;
-      document.getElementById('qText').textContent = q.q;
+      document.getElementById('qProgress').style.width = `${((qIndex + 1) / sessionLimit) * 100}%`;
+      document.getElementById('qModuleTag').textContent = `${currentQuestion.moduleIcon} ${currentQuestion.moduleName}`;
+      document.getElementById('qText').textContent = currentQuestion.q;
       document.getElementById('qFeedback').textContent = '';
       document.getElementById('qFeedback').className = 'feedback-bar';
       document.getElementById('qNextBtn').classList.remove('visible');
@@ -497,84 +578,113 @@
       const letters = ['A', 'B', 'C', 'D'];
       const container = document.getElementById('qOptions');
       container.innerHTML = '';
-      q.options.forEach((opt, i) => {
+      currentQuestion.options.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.className = 'opt-btn';
         btn.innerHTML = `<span class="opt-letter">${letters[i]}</span>${opt}`;
-        btn.onclick = () => pickAnswer(i, q.correctIndex, q);
+        btn.onclick = () => pickAnswer(i, currentQuestion.correctIndex, currentQuestion);
         container.appendChild(btn);
       });
+
+      let speakText = currentQuestion.q + '... ';
+      currentQuestion.options.forEach((opt, i) => {
+        speakText += letters[i] + ': ' + opt + '... ';
+      });
+      TTS.speak(speakText);
     }
 
     function pickAnswer(chosen, correct, q) {
       if (qAnswered) return;
       qAnswered = true;
+      
       const btns = document.querySelectorAll('.opt-btn');
       btns.forEach(b => b.disabled = true);
       const fb = document.getElementById('qFeedback');
+      
       if (chosen === correct) {
         btns[chosen].classList.add('correct');
         fb.textContent = '✅ Correct!';
         fb.className = 'feedback-bar correct';
+        TTS.speak('Correct!');
         qScore++;
+        
+        consecutiveCorrect++;
+        consecutiveWrong = 0;
+        
+        // Upgrade difficulty if performing well mid-quiz (e.g. 2 in a row correct)
+        if (consecutiveCorrect >= 2) {
+          const idx = difficultyLadder.indexOf(currentDifficulty);
+          if (idx < difficultyLadder.length - 1) {
+            currentDifficulty = difficultyLadder[idx + 1];
+            consecutiveCorrect = 0; // reset after upgrade
+          }
+        }
       } else {
         btns[chosen].classList.add('wrong');
         btns[correct].classList.add('correct');
         fb.textContent = `❌ Incorrect — Correct answer: ${q.options[correct]}`;
         fb.className = 'feedback-bar wrong';
+        TTS.speak(`Incorrect. The correct answer is: ${q.options[correct]}`);
+        
+        consecutiveWrong++;
+        consecutiveCorrect = 0;
+        
+        // Downgrade difficulty if struggling mid-quiz (e.g. 2 in a row wrong)
+        if (consecutiveWrong >= 2) {
+          const idx = difficultyLadder.indexOf(currentDifficulty);
+          if (idx > 0) {
+            currentDifficulty = difficultyLadder[idx - 1];
+            consecutiveWrong = 0; // reset after downgrade
+          }
+        }
       }
+      
       document.getElementById('qScore').textContent = `Score: ${qScore}`;
-      document.getElementById('qNextBtn').textContent = qIndex < allQuestions.length - 1 ? 'Next →' : 'See Results';
+      document.getElementById('qNextBtn').textContent = qIndex < sessionLimit - 1 ? 'Next Question →' : 'See Final Results';
       document.getElementById('qNextBtn').classList.add('visible');
     }
 
     function nextQ() {
       qIndex++;
-      if (qIndex < allQuestions.length) { renderQ(); } else { showResults(); }
+      if (qIndex < sessionLimit) { 
+        fetchNextQuestion();
+        renderQ(); 
+      } else { 
+        finishQuiz(); 
+      }
     }
-
-    function showResults() {
+    
+    function finishQuiz() {
       document.getElementById('quizView').style.display = 'none';
       const rv = document.getElementById('resultsView');
       rv.classList.add('show');
 
-      const pct = Math.round((qScore / allQuestions.length) * 100);
-      document.getElementById('rScore').textContent = `${qScore}/${allQuestions.length}`;
+      // Use actual questions answered in case they run out
+      const actualLimit = qIndex; 
+      const pct = Math.round((qScore / Math.max(actualLimit, 1)) * 100);
+      document.getElementById('rScore').textContent = `${qScore}/${actualLimit}`;
 
+      // Save high score
       const currentBest = parseInt(localStorage.getItem(`bestScore_${selectedCourseId}`)) || 0;
       if (pct > currentBest) {
         localStorage.setItem(`bestScore_${selectedCourseId}`, pct);
       }
+      
+      // Save their final difficulty state for the next session
+      localStorage.setItem(`quiz_difficulty_${selectedCourseId}`, currentDifficulty);
 
       let msg = '';
-      if (pct === 100) msg = '🏆 Perfect score! Absolute mastery!';
-      else if (pct >= 80) msg = '🎉 Excellent! You really know this course.';
-      else if (pct >= 60) msg = '💪 Good effort! A little more review and you\'ll nail it.';
-      else msg = '📚 Keep studying — every attempt makes you stronger!';
+      if (pct >= 80) msg = `🎉 Outstanding! You scored ${pct}%. Great job adapting to the ${currentDifficulty.toUpperCase()} questions!`;
+      else if (pct >= 50) msg = `📚 Good effort. You scored ${pct}%. Keep practicing!`;
+      else msg = '💪 Every attempt makes you stronger. Review the material and try again!';
+
       document.getElementById('rMsg').textContent = msg;
 
-      // Per-module breakdown
       const breakdown = document.getElementById('rBreakdown');
-      breakdown.innerHTML = '';
-      const course = coursesData[selectedCourseId];
-      course.modules.forEach(mod => {
-        if (!mod.quiz || mod.quiz.length === 0) return;
-        const modQs = allQuestions.filter(q => q.moduleName === mod.title);
-        const modCorrect = modQs.filter((q, idx) => {
-          // we'd need to track per-question. Let's skip and just show totals per module
-          return false;
-        }).length;
-        const pill = document.createElement('div');
-        pill.className = 'breakdown-pill';
-        pill.innerHTML = `<strong>${mod.icon}</strong>${mod.title}`;
-        breakdown.appendChild(pill);
-      });
-
-      // Simple: show correct/incorrect breakdown (total)
       breakdown.innerHTML = `
+        <div class="breakdown-pill"><strong>${currentDifficulty.toUpperCase()}</strong>Final Difficulty</div>
         <div class="breakdown-pill"><strong style="color:var(--success)">${qScore}</strong>Correct</div>
-        <div class="breakdown-pill"><strong style="color:#e74c3c">${allQuestions.length - qScore}</strong>Incorrect</div>
-        <div class="breakdown-pill"><strong>${pct}%</strong>Score</div>
+        <div class="breakdown-pill"><strong style="color:#e74c3c">${actualLimit - qScore}</strong>Incorrect</div>
       `;
     }
 
@@ -617,6 +727,8 @@
 
     init();
   </script>
+  <script src="tts.js"></script>
+  <script src="bee-timer.js"></script>
 </body>
 
 </html>

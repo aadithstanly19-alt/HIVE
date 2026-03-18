@@ -351,7 +351,7 @@
     /* ── Streak Badge ── */
     .streak-badge {
       position: fixed;
-      bottom: 1.75rem;
+      top: 1.75rem;
       right: 1.75rem;
       display: inline-flex;
       align-items: center;
@@ -735,9 +735,13 @@
       <span class="logo-text">Hive.</span>
     </div>
     <div class="nav-menu">
-      <a href="#" class="nav-item active">
+      <a href="dashboard.html" class="nav-item active">
         <span class="nav-icon">📊</span>
         Dashboard
+      </a>
+      <a href="behaviour.html" class="nav-item">
+        <span class="nav-icon">🧠</span>
+        Behaviour
       </a>
       <a href="certificates.html" class="nav-item">
         <span class="nav-icon">🏆</span>
@@ -747,11 +751,19 @@
         <span class="nav-icon">📝</span>
         Quizzes
       </a>
+      <a href="flashcards.html" class="nav-item">
+        <span class="nav-icon">📇</span>
+        Flashcards
+      </a>
       <a href="analytics.html" class="nav-item">
         <span class="nav-icon">📈</span>
         Analytics
       </a>
-      <a href="#" class="nav-item">
+      <a href="ai-chat.html" class="nav-item">
+        <span class="nav-icon">🐝</span>
+        AI Tutor
+      </a>
+      <a href="settings.html" class="nav-item">
         <span class="nav-icon">⚙️</span>
         Settings
       </a>
@@ -1218,6 +1230,7 @@
     <span class="streak-count" id="streakCount">1</span>
     <span class="streak-label">day streak</span>
   </div>
+  <script src="bee-timer.js"></script>
 </body>
 
 </html>
